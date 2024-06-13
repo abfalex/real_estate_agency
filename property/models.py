@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils import timezone
-
 from django.contrib.auth.models import User
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 class Flat(models.Model):
@@ -55,10 +55,13 @@ class Flat(models.Model):
         blank=True,
         db_index=True)
     
-    liked_by = models.ManyToManyField(verbose_name='Кто лайкнул', to=User, related_name='liked_posts')
+    liked_by = models.ManyToManyField(verbose_name='Кто лайкнул', to=User, blank=True, related_name='liked_flats')
+    
+    owner_pure_phone = PhoneNumberField(verbose_name='Номер владельца', blank=True, region="RU", max_length=20)
 
     def __str__(self):
         return f'{self.town}, {self.address} ({self.price}р.)'
+
 
 class Complaint(models.Model):
     author = models.ForeignKey(
