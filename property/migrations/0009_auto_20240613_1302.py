@@ -25,5 +25,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(normalize_owner_phone)
+        migrations.RunPython(normalize_owner_phone, move_backward)
     ]
