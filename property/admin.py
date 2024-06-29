@@ -5,26 +5,28 @@ from .models import Flat, Complaint, Owner
 
 class OwnerInline(admin.TabularInline):
     model = Owner.flats.through
-    raw_id_fields = ('owner', )
+    raw_id_fields = ("owner",)
 
 
 @admin.register(Flat)
 class FlatFilter(admin.ModelAdmin):
-    search_fields = ('town', 'address', 'owner')
-    readonly_fields = ['created_at']
-    list_display = ('address', 'price', 'new_building', 'construction_year', 'town', 'owners_phonenumber', 'owner_pure_phone')
-    list_editable = ['new_building']
-    list_filter = ('new_building', 'rooms_number', 'has_balcony', 'active')
-    raw_id_fields = ['liked_by', 'owners']
-    inlines = [OwnerInline, ]
+    search_fields = ("town", "address", "owner")
+    readonly_fields = ["created_at"]
+    list_display = ("address", "price", "new_building", "construction_year", "town")
+    list_editable = ["new_building"]
+    list_filter = ("new_building", "rooms_number", "has_balcony", "active")
+    raw_id_fields = ["liked_by", "owners"]
+    inlines = [
+        OwnerInline,
+    ]
 
 
 @admin.register(Complaint)
 class Complaint(admin.ModelAdmin):
-    raw_id_fields = ('author', 'flat')
+    raw_id_fields = ("author", "flat")
 
 
 @admin.register(Owner)
 class OwnerAdmin(admin.ModelAdmin):
-    search_fields = ('name', 'owners_phonenumber', 'owner_pure_phone')
-    raw_id_fields = ('flats', )
+    search_fields = ("name", "phonenumber", "pure_phone")
+    raw_id_fields = ("flats",)
