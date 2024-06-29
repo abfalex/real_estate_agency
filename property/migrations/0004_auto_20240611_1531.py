@@ -4,21 +4,20 @@ from django.db import migrations
 
 
 def replace_field(apps, schema_editor):
-    Flat = apps.get_model('property', 'Flat')
-    for flat in Flat.objects.all():
+    Flat = apps.get_model("property", "Flat")
+    for flat in Flat.objects.all().iterator():
         if int(flat.construction_year) >= 2015:
             flat.new_building = True
         else:
             flat.new_building = False
-        
+
         flat.save()
+
 
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('property', '0003_auto_20240611_1355'),
+        ("property", "0003_auto_20240611_1355"),
     ]
 
-    operations = [
-        migrations.RunPython(replace_field)
-    ]
+    operations = [migrations.RunPython(replace_field)]

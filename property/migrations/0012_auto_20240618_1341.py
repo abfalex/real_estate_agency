@@ -2,31 +2,27 @@
 
 from django.db import migrations
 
-def move_owners(apps, schema_editor):
-    Flat = apps.get_model('property', 'Flat')
-    Owner = apps.get_model('property', 'Owner')
 
-    for flat in Flat.objects.all():
+def move_owners(apps, schema_editor):
+    Flat = apps.get_model("property", "Flat")
+    Owner = apps.get_model("property", "Owner")
+
+    for flat in Flat.objects.all().iterator():
         Owner.objects.get_or_create(
             name=flat.owner,
-            defaults={
-                "owners_phonenumber": flat.owners_phonenumber,
-                "owner_pure_phone": flat.owner_pure_phone
-            }
+            defaults={"phonenumber": flat.phonenumber, "pure_phone": flat.pure_phone},
         )
-        
+
 
 def move_backwards(apps, schema_editor):
-    Owner = apps.get_model('property', 'Owner')
-    Owner.objects.all().delete() 
+    Owner = apps.get_model("property", "Owner")
+    Owner.objects.all().delete()
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('property', '0011_owner'),
+        ("property", "0011_owner"),
     ]
 
-    operations = [
-        migrations.RunPython(move_owners, move_backwards)
-    ]
+    operations = [migrations.RunPython(move_owners, move_backwards)]

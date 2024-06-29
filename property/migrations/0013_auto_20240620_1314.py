@@ -4,23 +4,20 @@ from django.db import migrations
 
 
 def move_flats(apps, schema_editor):
-    Flat = apps.get_model('property', 'Flat')
-    Owner = apps.get_model('property', 'Owner')
+    Flat = apps.get_model("property", "Flat")
+    Owner = apps.get_model("property", "Owner")
     flats = Flat.objects.all()
     for flat in flats.iterator():
         owner, _ = Owner.objects.get_or_create(
-            name=flat.owner,
-            owners_phonenumber=flat.owners_phonenumber,
-            owner_pure_phone=flat.owner_pure_phone
+            name=flat.owner, phonenumber=flat.phonenumber, pure_phone=flat.pure_phone
         )
         owner.flats.add(flat)
+
 
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('property', '0012_auto_20240618_1341'),
+        ("property", "0012_auto_20240618_1341"),
     ]
 
-    operations = [
-        migrations.RunPython(move_flats)
-    ]
+    operations = [migrations.RunPython(move_flats)]
